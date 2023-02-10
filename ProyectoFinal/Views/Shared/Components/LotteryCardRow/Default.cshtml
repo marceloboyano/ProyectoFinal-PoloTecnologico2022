@@ -1,0 +1,37 @@
+﻿@model (int, int[,])
+
+@{
+    string ReplaceZeroValues(int numberToEvaluate)
+    {
+      
+        if(numberToEvaluate == 0)
+        {
+            return  string.Empty;
+        }
+
+        return numberToEvaluate.ToString();
+    }
+
+   
+}
+
+<div id=@Model.Item1 class="container  pl-0 pr-0  col-sm-12 col-lg-6 col-md-12 p-3 m-0">
+    @for (int i = 0; i < 3; i++)
+    {
+        <div class="row  display   p-0 m-0">
+             
+            @for (int j = 0; j < 9; j++)
+            {
+                string className = "";
+                if (Model.Item2[i, j] == 0)
+                {
+                    className = "bg-color";
+                }
+         
+                <div class="col show   @className"> <strong class="bolilla">@ReplaceZeroValues(Model.Item2[i,j])</strong></div>
+            }
+
+        </div>
+    }
+    <div class="fw-bolder">Carton:@Model.Item1</div>
+</div>

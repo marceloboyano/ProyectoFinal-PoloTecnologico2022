@@ -1,0 +1,99 @@
+﻿@model IEnumerable<int[,]>
+
+@{
+    var count = 1;
+}
+
+
+<div class="text-center">
+    <h1 class=" display-4 fw-bolder">Bienvenidos al Juego</h1>
+</div>
+
+<div class="container text-center">
+    <div class="row  ">
+        @foreach (var carton in @Model)
+        {
+            <vc:lottery-card-row id=@count matrix=carton />
+            count++;
+        }
+    </div>
+    <br />
+    <div>
+        <button class="btn btn-success " id="lanzarBolilla">Lanzar Bolilla</button>
+    </div>
+</div>
+
+<div class="container text-center">
+    <div class="row flex-lg-row flex-sm-column  flex-sm-wrap-reverse  ">
+        <div class="col display-5 fw-bolder " id="bolilla">
+            Bolilla:
+        </div>
+        <div class="col  display-5 fw-bolder">
+            Cartón Ganador:
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var winners = [];
+
+    var cartones = {
+        carton1: {
+            id: 1,
+            counter: 0
+        },
+        carton2: {
+            id: 2,
+            counter: 0
+        },
+        carton3: {
+            id: 3,
+            counter: 0
+        },
+        carton4: {
+            id: 4,
+            counter: 0
+        },
+    }
+
+    function chequearGanadores() {
+        Object.keys(cartones).forEach(c => {
+            if (cartones[c].counter === 1) {
+                winners.push(cartones[c].id);
+                fetch("api/game", {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    method: "POST",
+                    body: JSON.stringify(winners)
+                })
+            }
+        });
+    }
+    document.querySelector("#lanzarBolilla").addEventListener("click", function () {
+        fetch("Game/Bolillero")
+            .then(response => response.json())
+            .then(data => {
+                let bolillas = document.querySelectorAll(".bolilla");
+                bolillas.forEach(function (b) {
+                    if (Number(b.textContent) === data) {
+                        b.classList.toggle("paint");
+                    }
+                });
+                let bolillaDisplay = document.querySelector("#bolilla");
+                bolillaDisplay.textContent = `Bolilla: ${data}`;
+
+                let cartones = {
+                    carton1: { counter: document.querySelectorAll("#1.paint").length },
+                    carton2: { counter: document.querySelectorAll("#2.paint").length },
+                    carton3: { counter: document.querySelectorAll("#3.paint").length },
+                    carton4: { counter: document.querySelectorAll("#4.paint").length }
+                };
+                console.log(cartones);
+                chequearGanadores();
+            })
+            .catch(error => console.error(error));
+
+        });
+</script>
