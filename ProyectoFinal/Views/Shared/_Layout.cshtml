@@ -24,15 +24,15 @@
       .paint {
             border-radius: 50%;
             padding: 1.1rem;           
-            background-color: orange;          
+            background-color: red;          
             line-height: 4vh;
             width: calc(4vh);
             height: calc(4vh);
             display: flex;
             align-items: center;
             justify-content: center;
-            min-width: 100%;
-            min-height: 100%;
+            min-width: 150%;
+            min-height: 150%;
         }
 
         .bg-color {
@@ -45,6 +45,41 @@
             border: 1px solid #000;
             font-weight: bold;
         }
+
+        #modal {
+            display: none; /* Ocultar la ventana modal por defecto */
+            position: fixed; /* Posición fija */
+            z-index: 1; /* Mostrar por encima de otros elementos */
+            left: 0;
+            top: 0;
+            width: 100%; /* Ancho completo de la pantalla */
+            height: 100%; /* Altura completa de la pantalla */
+            overflow: auto; /* Mostrar barras de desplazamiento si el contenido es demasiado largo */
+            background-color: rgba(0,0,0,0.4); /* Fondo semi-transparente */
+        }
+
+        #modal-content {
+            background-color: #FFEB3B; /* Fondo amarillo */
+            margin: 15% auto; /* Margen superior y inferior automático */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Ancho del contenido */
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+        }
+
+        #close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            #close-button:hover,
+            #close-button:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
 
     </style>
 </head>

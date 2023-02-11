@@ -29,11 +29,16 @@
             Bolilla:
         </div>
         <div class="col  display-5 fw-bolder" id="ganador">
-           Ganadores:
+            Cartón Ganador:
         </div>
     </div>
 </div>
-<div class="display-3 d-none" id="winner">  </div>
+<div id="modal">
+    <div id="modal-content">
+        <span id="close-button">&times;</span>
+        <p class="display-4 fw-bold text-center"> El Juego ha Terminado!!!</p>
+    </div>
+</div>
 <script type="text/javascript">
 
     var winners = [];
@@ -56,26 +61,59 @@
             counter: 0
         },
     }
-
     function chequearGanadores() {
-        Object.keys(cartones).forEach(async c =>  {
-            if (cartones[c].counter === 2) {
+        const fetchCalls = [];
+
+        Object.keys(cartones).forEach(async c => {
+            if (cartones[c].counter === 15) {
+                console.log("aca entro");
                 winners.push(cartones[c].id);
-                await fetch("Api/Winner/Cartones", {
+                fetchCalls.push(fetch("Api/Winner/Cartones", {
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     method: "POST",
                     body: JSON.stringify(winners)
-                })
-                $("#ganador").text(`Ganadores: ${winners.map(x=>x)}`);
-                $("#winner").text(`El Carton Ganador es: ${winners.map(x => x)}`);
-                document.getElementById("winner").classList.toggle("d-none");
+
+                }));
             }
         });
+        console.log(fetchCalls.length);
+        if (fetchCalls.length > 0) {
+            Promise.all(fetchCalls)
+                .then(() => {
+                    document.querySelector("#ganador").innerHTML = `Los Ganadores son. Carton:${winners.map(x => x)}`;
+                    document.querySelector("#lanzarBolilla").disabled = true;
+                    showModal();
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
     }
+
+
+    // Obtener los elementos modal y el botón de cierre
+    var modal = document.getElementById("modal");
+    var closeButton = document.getElementById("close-button");
+
+    // Función para mostrar la ventana modal
+    function showModal() {
+        modal.style.display = "block";
+    }
+
+    // Función para cerrar la ventana modal
+    function closeModal() {      
+        modal.style.display = "none";
+    }
+
+    // Escuchar eventos de clic en el botón de cierre
+    closeButton.addEventListener("click", closeModal);
+
+    
+
     document.querySelector("#lanzarBolilla").addEventListener("click", async function () {
-       await fetch("Api/Bolillero")
+        await fetch("Api/Bolillero")
             .then(response => response.json())
             .then(data => {
                 let bolillas = document.querySelectorAll(".bolilla");
@@ -92,9 +130,10 @@
                 cartones.carton3.counter = $('#3').find('.paint').length
                 cartones.carton4.counter = $('#4').find('.paint').length
                
+
                 chequearGanadores();
             })
             .catch(error => console.error(error));
 
-        });
+    });
 </script>
