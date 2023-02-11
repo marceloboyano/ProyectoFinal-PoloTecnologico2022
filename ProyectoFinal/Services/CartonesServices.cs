@@ -12,10 +12,10 @@ namespace ProyectoFinal.Services
             _repo = repo;
         }
 
-        public async Task InsertCards(List<int> winningCards)
+        public async Task InsertCards(int[] winners)
         {
 
-            await _repo.AddCards(winningCards);
+            await _repo.AddCards(winners);
         }
     }
 }

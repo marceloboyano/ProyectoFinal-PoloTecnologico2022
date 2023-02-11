@@ -3,8 +3,8 @@ using ProyectoFinal.Services;
 
 namespace ProyectoFinal.Controllers.Api
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    //[Route("api/[controller]")]
+    //[ApiController]
     public class GameController : ControllerBase
     {
         private readonly IGetBallsServices _ballService;
@@ -27,11 +27,7 @@ namespace ProyectoFinal.Controllers.Api
             return Ok(bolilla);
         }
 
-        [HttpPost]
-        public IActionResult SendWinner([FromBody] int[] winners)
-        {
-            return Ok();
-        }
+      
 
     }
 }

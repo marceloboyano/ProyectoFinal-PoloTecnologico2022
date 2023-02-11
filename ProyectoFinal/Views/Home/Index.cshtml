@@ -28,12 +28,12 @@
         <div class="col display-5 fw-bolder " id="bolilla">
             Bolilla:
         </div>
-        <div class="col  display-5 fw-bolder">
-            Cartón Ganador:
+        <div class="col  display-5 fw-bolder" id="ganador">
+           Ganadores:
         </div>
     </div>
 </div>
-
+<div class="display-3 d-none" id="winner">  </div>
 <script type="text/javascript">
 
     var winners = [];
@@ -58,21 +58,24 @@
     }
 
     function chequearGanadores() {
-        Object.keys(cartones).forEach(c => {
-            if (cartones[c].counter === 1) {
+        Object.keys(cartones).forEach(async c =>  {
+            if (cartones[c].counter === 2) {
                 winners.push(cartones[c].id);
-                fetch("api/game", {
+                await fetch("Api/Winner/Cartones", {
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     method: "POST",
                     body: JSON.stringify(winners)
                 })
+                $("#ganador").text(`Ganadores: ${winners.map(x=>x)}`);
+                $("#winner").text(`El Carton Ganador es: ${winners.map(x => x)}`);
+                document.getElementById("winner").classList.toggle("d-none");
             }
         });
     }
-    document.querySelector("#lanzarBolilla").addEventListener("click", function () {
-        fetch("Game/Bolillero")
+    document.querySelector("#lanzarBolilla").addEventListener("click", async function () {
+       await fetch("Api/Bolillero")
             .then(response => response.json())
             .then(data => {
                 let bolillas = document.querySelectorAll(".bolilla");
@@ -81,16 +84,14 @@
                         b.classList.toggle("paint");
                     }
                 });
-                let bolillaDisplay = document.querySelector("#bolilla");
-                bolillaDisplay.textContent = `Bolilla: ${data}`;
 
-                let cartones = {
-                    carton1: { counter: document.querySelectorAll("#1.paint").length },
-                    carton2: { counter: document.querySelectorAll("#2.paint").length },
-                    carton3: { counter: document.querySelectorAll("#3.paint").length },
-                    carton4: { counter: document.querySelectorAll("#4.paint").length }
-                };
-                console.log(cartones);
+                $("#bolilla").text(`Bolilla: ${data}`);
+
+                cartones.carton1.counter = $('#1').find('.paint').length
+                cartones.carton2.counter = $('#2').find('.paint').length
+                cartones.carton3.counter = $('#3').find('.paint').length
+                cartones.carton4.counter = $('#4').find('.paint').length
+               
                 chequearGanadores();
             })
             .catch(error => console.error(error));

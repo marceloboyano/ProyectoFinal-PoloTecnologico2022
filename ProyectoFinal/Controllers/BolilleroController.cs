@@ -12,7 +12,7 @@ namespace ProyectoFinal.Controllers
 {
 
     [ApiController]
-    [Route("Game/[controller]")]
+    [Route("Api/[controller]")]
     public class BolilleroController : ControllerBase
     {
         private readonly IBolilleroService _bolilleroService;
@@ -24,20 +24,14 @@ namespace ProyectoFinal.Controllers
 
 
         [HttpGet]
-        public IActionResult GetBalls()
+        public async Task<IActionResult> GetBalls()
         {
-            var bolilla = _bolilleroService.CreateBall();
-            _bolilleroService.InsertBall(bolilla);
+            var bolilla =  _bolilleroService.CreateBall();
+           await _bolilleroService.InsertBall(bolilla);
 
             return Ok(bolilla);
         }
-
-        [HttpPost]
-        public IActionResult SendWinner([FromBody] int[] winners)
-        {
-            return Ok();
-        }
-
+              
     }
 }
 

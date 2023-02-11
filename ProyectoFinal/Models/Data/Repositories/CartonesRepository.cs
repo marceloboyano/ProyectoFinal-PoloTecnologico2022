@@ -14,30 +14,18 @@ namespace ProyectoFinal.Models.Data.Repositories
         {
             _context = context;
         }
-        public async Task AddCards(List<int> winningCards)
+        public async Task AddCards(int[] winners)
         {
             var entity = new HistorialCartones
             {
                 FechaHora = DateTime.Now
             };
 
-            foreach (var card in winningCards)
+            for (int i = 0; i < winners.Length; i++)
             {
-                switch (card)
-                {
-                    case 1:
-                        entity.Carton1 = 1;
-                        break;
-                    case 2:
-                        entity.Carton2 = 2;
-                        break;
-                    case 3:
-                        entity.Carton3 = 3;
-                        break;
-                    case 4:
-                        entity.Carton4 = 4;
-                        break;
-                }
+                var propertyName = "Carton" + (i + 1);
+                var property = typeof(HistorialCartones).GetProperty(propertyName);
+                property.SetValue(entity, winners[i]);
             }
 
             _context.Add(entity);

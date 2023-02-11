@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using ProyectoFinal.Data;
 using ProyectoFinal.Models.Data.Repositories;
 using ProyectoFinal.Services;
@@ -10,9 +11,12 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddSingleton<ILotteryCardRepository, LotteryCardRepository>();
 builder.Services.AddScoped<ILotteryCardService, LotteryCardService>();
-builder.Services.AddScoped<IGetBallsServices, GetBallsServices>();
-builder.Services.AddScoped<IBolilleroService, BolilleroService>();
 builder.Services.AddScoped<IBolilleroRepository, BolilleroRepository>();
+builder.Services.AddScoped<IBolilleroService, BolilleroService>();
+builder.Services.AddScoped<ICartonesRepository, CartonesRepository>();
+builder.Services.AddScoped<ICartonesServices, CartonesServices>();
+
+
 
 builder.Services.AddDbContext<BingoContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));
 var app = builder.Build();

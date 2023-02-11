@@ -10,8 +10,11 @@ using ProyectoFinal.Services;
 
 namespace ProyectoFinal.Controllers
 {
-    public class CartonesController : Controller
+    [ApiController]
+    [Route("Api/Winner/[controller]")]
+    public class CartonesController : ControllerBase
     {
+
 
         private readonly ICartonesServices _cartones;
         public CartonesController(ICartonesServices cartones)
@@ -19,19 +22,13 @@ namespace ProyectoFinal.Controllers
             _cartones = cartones;
         }
 
-        // GET: Cartones/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
         [HttpPost]
-        public async Task<IActionResult> Create(List<int> winningCards)
+        public async Task<IActionResult>SendWinner([FromBody] int[] winners)
         {
-
-            await _cartones.InsertCards(winningCards);           
-            return View();
+            await _cartones.InsertCards(winners);
+            return Ok();
         }
+      
 
     }
 }

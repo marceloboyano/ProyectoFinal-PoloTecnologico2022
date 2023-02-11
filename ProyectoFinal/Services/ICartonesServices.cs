@@ -2,6 +2,6 @@
 {
     public interface ICartonesServices
     {
-        Task InsertCards(List<int> winningCards);
+        Task InsertCards(int[] winningCards);
     }
 }

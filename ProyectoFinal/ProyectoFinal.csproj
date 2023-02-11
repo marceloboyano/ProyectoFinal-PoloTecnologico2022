@@ -15,4 +15,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.11" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Bolillero\" />
+    <Folder Include="Views\Cartones\" />
+  </ItemGroup>
+
 </Project>

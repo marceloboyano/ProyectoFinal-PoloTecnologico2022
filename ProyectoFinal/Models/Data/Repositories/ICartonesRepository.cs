@@ -2,6 +2,6 @@
 {
     public interface ICartonesRepository
     {
-        Task AddCards(List<int> winningCards);
+        Task AddCards(int[] winners);
     }
 }
