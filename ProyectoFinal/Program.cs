@@ -18,7 +18,7 @@ builder.Services.AddScoped<ICartonesServices, CartonesServices>();
 
 
 
-builder.Services.AddDbContext<BingoContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));
+builder.Services.AddDbContext<BingoContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("connection")));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

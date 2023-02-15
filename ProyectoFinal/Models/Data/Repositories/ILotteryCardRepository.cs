@@ -4,5 +4,7 @@
     {
         LotteryCard GetOrCreateLotteryCard(int? id);
         IEnumerable<LotteryCard> GetAll();
+        void ResetBalls();
+        void TryStoreBall(int number, out bool result);
     }
 }

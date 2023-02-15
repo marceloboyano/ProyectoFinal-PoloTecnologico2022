@@ -1,10 +1,15 @@
-﻿namespace ProyectoFinal.Models.Data.Repositories
+﻿using ProyectoFinal.Services;
+
+namespace ProyectoFinal.Models.Data.Repositories
 {
     public class LotteryCardRepository : ILotteryCardRepository
     {
         private readonly List<LotteryCard> _lotteryCards = new List<LotteryCard>();
         public Random random = new Random(DateTime.Now.Millisecond);
         private int _count = 0;
+        private readonly List<int> _ballsNotAvailable = new List<int>();
+        
+        public List<int> BallsNotAvailable => _ballsNotAvailable.ToList();
 
         public IEnumerable<LotteryCard> GetAll()
         {
@@ -22,6 +27,17 @@
             PutSpacesLotteryCard(_lotteryCards[createdId - 1]);
             return _lotteryCards[createdId - 1];
         }
+
+        public void ResetBalls() => _ballsNotAvailable.Clear();
+        public void TryStoreBall(int ball, out bool result)
+        {
+            result = false;
+            if (! _ballsNotAvailable.Contains(ball))
+            {
+                _ballsNotAvailable.Add(ball);
+                result = true;
+            }
+        } 
 
         #region PRIVATE METHODS
         private int CreateLotteryCard()
@@ -159,6 +175,7 @@
 
             }
         }
+
         #endregion
     }
 }

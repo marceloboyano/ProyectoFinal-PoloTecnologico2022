@@ -18,30 +18,50 @@
         }
     </div>
     <br />
-    <div>
-        <button class="btn btn-success " id="lanzarBolilla">Lanzar Bolilla</button>
-    </div>
-</div>
 
-<div class="container text-center">
-    <div class="row flex-lg-row flex-sm-column  flex-sm-wrap-reverse  ">
-        <div class="col display-5 fw-bolder " id="bolilla">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <button class="btn btn-success " id="BotonJuego">Lanzar Bolilla</button>
+            </div>
+            <div class="col-md-6">
+                <button class=" btn btn-info " id="show-modal-bolillas">Mostrar Bolillas</button>
+            </div>
+        </div>
+    </div>
+  
+</div>
+<br />
+
+
+
+<div class="row flex-lg-row  d-flex flex flex-wrap text-sm-start    text-responsive  text-lg-center">
+    <div class="col-sm-6" id="bolilla">
             Bolilla:
         </div>
-        <div class="col  display-5 fw-bolder" id="ganador">
+    <div class="col-sm-6 " id="ganador">
             Cartón Ganador:
         </div>
     </div>
-</div>
+
 <div id="modal">
     <div id="modal-content">
         <span id="close-button">&times;</span>
         <p class="display-4 fw-bold text-center"> El Juego ha Terminado!!!</p>
     </div>
 </div>
-<script type="text/javascript">
 
+<div id="modal-bolillas">
+    <div id="modal-content-bolillas">
+        <span id="close">&times;</span>
+        <p class="display-4 fw-bold text-center" id="modal-text"></p>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var balls = []
     var winners = [];
+    var btnJuego = document.querySelector("#BotonJuego");
 
     var cartones = {
         carton1: {
@@ -62,35 +82,65 @@
         },
     }
     function chequearGanadores() {
-        const fetchCalls = [];
-
-        Object.keys(cartones).forEach(async c => {
-            if (cartones[c].counter === 15) {
-                console.log("aca entro");
+        Object.keys(cartones).forEach(c => {
+            if (cartones[c].counter === 15)
                 winners.push(cartones[c].id);
-                fetchCalls.push(fetch("Api/Winner/Cartones", {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    method: "POST",
-                    body: JSON.stringify(winners)
-
-                }));
-            }
         });
-        console.log(fetchCalls.length);
-        if (fetchCalls.length > 0) {
-            Promise.all(fetchCalls)
-                .then(() => {
-                    document.querySelector("#ganador").innerHTML = `Los Ganadores son. Carton:${winners.map(x => x)}`;
-                    document.querySelector("#lanzarBolilla").disabled = true;
+
+        if (winners.length > 0) {
+            btnJuego.disable = true;
+            fetch('api/winner/cartones', {
+                method: 'post',
+                body: JSON.stringify(winners),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(data => {
+                    document.querySelector("#ganador").innerHTML = `Ganadores: Cartón:${winners}`;
+                    btnJuego.removeEventListener('click', lanzarBolilla, true);
+                    btnJuego.addEventListener('click', resetearJuego, true);
+                    btnJuego.innerHTML = "Reiniciar Juego";
+                    btnJuego.classList.toggle("btn-info");
+
                     showModal();
                 })
-                .catch((error) => {
-                    console.error(error);
-                });
+                .catch(error => console.error('Error:', error));
         }
+
     }
+
+    
+  
+
+    //configurar modal de bolillas
+    function showModalBolillas(text) {
+        console.log(text);
+        document.querySelector("#modal-text").innerHTML = text;
+        document.querySelector("#modal-bolillas").style.display = "block";
+    }
+
+    
+    //mostrar modal de las bolillas
+    document.querySelector("#show-modal-bolillas").addEventListener("click", function () {        
+        let content = '';
+        for (const ball of balls) {           
+            content +=`<p>${ball}</p>` + ' - ';
+        }
+        console.log(content + balls);
+        showModalBolillas(content);
+    });
+
+
+
+    //cerrar modal que muestra bolillas
+    document.querySelector("#close").addEventListener("click", function () {
+        document.querySelector("#modal-bolillas").style.display = "none";
+    });
+
+
+
+
 
 
     // Obtener los elementos modal y el botón de cierre
@@ -103,16 +153,41 @@
     }
 
     // Función para cerrar la ventana modal
-    function closeModal() {      
+    function closeModal() {
         modal.style.display = "none";
     }
 
     // Escuchar eventos de clic en el botón de cierre
     closeButton.addEventListener("click", closeModal);
 
-    
 
-    document.querySelector("#lanzarBolilla").addEventListener("click", async function () {
+    document.querySelector("#BotonJuego").addEventListener("click", lanzarBolilla, true);
+
+    function resetearJuego() {
+        fetch('api/bolillero', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(data => {
+            let bolillas = document.querySelectorAll(".bolilla");
+            bolillas.forEach(function (b) {
+                b.classList.remove("paint");
+            });
+            btnJuego.removeEventListener('click', resetearJuego, true);
+            btnJuego.addEventListener('click', lanzarBolilla, true);
+            document.querySelector("#bolilla").innerHTML = `Bolilla: `;
+            btnJuego.innerHTML = "Lanzar Bolilla";
+            btnJuego.classList.toggle("btn-info");
+            winners = [];
+            balls = [];
+            document.querySelector("#ganador").innerHTML = `Cartón Ganador:`;
+        })
+            .catch(error => console.error('Error:', error));
+    }
+
+
+    async function lanzarBolilla() {
         await fetch("Api/Bolillero")
             .then(response => response.json())
             .then(data => {
@@ -122,18 +197,16 @@
                         b.classList.toggle("paint");
                     }
                 });
-
-                $("#bolilla").text(`Bolilla: ${data}`);
+                balls.push(data);  
+                document.querySelector("#bolilla").innerHTML = `Bolilla: ${data}`;
 
                 cartones.carton1.counter = $('#1').find('.paint').length
                 cartones.carton2.counter = $('#2').find('.paint').length
                 cartones.carton3.counter = $('#3').find('.paint').length
                 cartones.carton4.counter = $('#4').find('.paint').length
-               
 
                 chequearGanadores();
             })
             .catch(error => console.error(error));
-
-    });
+    }
 </script>

@@ -1,7 +1,5 @@
 ﻿using ProyectoFinal.Data;
-using System.Security.Cryptography;
-using System;
-using System.Security.Principal;
+
 
 namespace ProyectoFinal.Models.Data.Repositories
 {
@@ -21,16 +19,34 @@ namespace ProyectoFinal.Models.Data.Repositories
                 FechaHora = DateTime.Now
             };
 
-            for (int i = 0; i < winners.Length; i++)
+            switch (winners.Length)
             {
-                var propertyName = "Carton" + (i + 1);
-                var property = typeof(HistorialCartones).GetProperty(propertyName);
-                property.SetValue(entity, winners[i]);
-            }
+                case 1:
+                    entity.Carton1 = winners[0];
+                    break;
+                case 2:
+                    entity.Carton1 = winners[0];
+                    entity.Carton2 = winners[1];
+                    break;
+                case 3:
+                    entity.Carton1 = winners[0];
+                    entity.Carton2 = winners[1];
+                    entity.Carton3 = winners[2];
+                    break;
+                case 4:
+                    entity.Carton1 = winners[0];
+                    entity.Carton2 = winners[1];
+                    entity.Carton3 = winners[2];
+                    entity.Carton4 = winners[3];
+                    break;
+                default:
+                    break;
+            }           
 
             _context.Add(entity);
             await _context.SaveChangesAsync();
         }
-             
+
     }
 }
+

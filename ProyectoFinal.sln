@@ -5,6 +5,8 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProyectoFinal", "ProyectoFinal\ProyectoFinal.csproj", "{5CE1127A-3ED8-4837-8ADB-690114618A03}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Bingo", "Bingo\Bingo.sqlproj", "{25BD8443-6A7B-4EED-876D-3F5E2361A4AE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,12 @@ Global
 		{5CE1127A-3ED8-4837-8ADB-690114618A03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CE1127A-3ED8-4837-8ADB-690114618A03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CE1127A-3ED8-4837-8ADB-690114618A03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25BD8443-6A7B-4EED-876D-3F5E2361A4AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25BD8443-6A7B-4EED-876D-3F5E2361A4AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25BD8443-6A7B-4EED-876D-3F5E2361A4AE}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{25BD8443-6A7B-4EED-876D-3F5E2361A4AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25BD8443-6A7B-4EED-876D-3F5E2361A4AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25BD8443-6A7B-4EED-876D-3F5E2361A4AE}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

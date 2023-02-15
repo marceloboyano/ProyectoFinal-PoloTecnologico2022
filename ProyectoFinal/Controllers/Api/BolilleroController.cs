@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ProyectoFinal.Data;
 using ProyectoFinal.Services;
 
-namespace ProyectoFinal.Controllers
+namespace ProyectoFinal.Controllers.Api
 {
 
     [ApiController]
@@ -26,12 +26,18 @@ namespace ProyectoFinal.Controllers
         [HttpGet]
         public async Task<IActionResult> GetBalls()
         {
-            var bolilla =  _bolilleroService.CreateBall();
-           await _bolilleroService.InsertBall(bolilla);
+            var bolilla = _bolilleroService.CreateBall();
+            await _bolilleroService.InsertBall(bolilla);
 
             return Ok(bolilla);
         }
-              
+
+        [HttpPost]
+        public IActionResult ResetGame()
+        {
+            _bolilleroService.ResetGame();
+            return Ok();
+        }
     }
 }
 

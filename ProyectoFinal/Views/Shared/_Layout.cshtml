@@ -19,12 +19,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-        }           
+        }
 
-      .paint {
+        .paint {
             border-radius: 50%;
-            padding: 1.1rem;           
-            background-color: red;          
+            padding: 1.1rem;
+            background-color: red;
             line-height: 4vh;
             width: calc(4vh);
             height: calc(4vh);
@@ -81,6 +81,55 @@
                 cursor: pointer;
             }
 
+        .text-responsive {
+            font-size: 3vw;
+            font-weight: 500;
+
+        }
+
+        #modal-bolillas {
+            display: none;
+        }
+
+        #modal-bolillas {
+            position: fixed; /* hace que el modal se quede fijo en pantalla */
+            z-index: 1; /* lo coloca en la parte frontal */
+            left: 0;
+            top: 0;
+            width: 100%; /* hace que ocupe todo el ancho de la pantalla */
+            height: 100%; /* hace que ocupe todo el alto de la pantalla */
+            overflow: auto; /* permite hacer scroll si el contenido es demasiado largo */
+            background-color: rgba(0,0,0,0.5); /* le da un color de fondo con transparencia */
+        }
+
+        #modal-content-bolillas {
+            background-color: rgb(225, 246, 244);
+            margin: 5% auto; /* le da un margen en el alto y en el ancho */
+            padding: 20px; /* le da un padding interno */
+            border: 1px solid #888;
+            width: 80%; /* le da un ancho */
+        }
+
+        #modal-text p {
+            display: inline-block;
+            margin-right: 8px;
+            font-size: 3vw;
+            
+        }
+
+        #close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            #close:hover,
+            #close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
     </style>
 </head>
 

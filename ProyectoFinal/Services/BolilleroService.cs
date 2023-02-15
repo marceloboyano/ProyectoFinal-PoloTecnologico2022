@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ProyectoFinal.Data;
-using ProyectoFinal.Models.Data.Repositories;
+﻿using ProyectoFinal.Models.Data.Repositories;
 
 namespace ProyectoFinal.Services
 {
@@ -9,15 +7,16 @@ namespace ProyectoFinal.Services
 
       
         private readonly IBolilleroRepository _repo;
-        private List<int> Balls { get; set; } = new List<int>();
-        private int _Number { get; set; }
+        private readonly ILotteryCardRepository _lotteryRepo;
+
         private Random _random = new Random(DateTime.Now.Millisecond);
-        private bool _repeat = false;
 
-
-        public BolilleroService(IBolilleroRepository repo)
+        public BolilleroService(
+            ILotteryCardRepository lotteryRepo,
+            IBolilleroRepository repo)
         {
-            _repo = repo;      
+            _repo = repo;
+            _lotteryRepo = lotteryRepo;
         }
 
 
@@ -30,19 +29,22 @@ namespace ProyectoFinal.Services
 
         public int CreateBall()
         {
-
-            while (!_repeat)
+            var repeat = false;
+            int number = new();
+            
+            while (!repeat)
             {
-                _Number = _random.Next(1, 91);
-                if (!Balls.Contains(_Number))
-                    _repeat = true;
+                number = _random.Next(1, 91);
+                _lotteryRepo.TryStoreBall(number, out repeat);
             }
 
-            Balls.Add(_Number);
-            return _Number;
+            return number;
         }
 
-
+        public void ResetGame()
+        {
+            _lotteryRepo.ResetBalls();
+        }
     }
 
 

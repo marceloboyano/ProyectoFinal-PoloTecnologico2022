@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ProyectoFinal.Data;
 using ProyectoFinal.Services;
 
-namespace ProyectoFinal.Controllers
+namespace ProyectoFinal.Controllers.Api
 {
     [ApiController]
     [Route("Api/Winner/[controller]")]
@@ -23,12 +23,12 @@ namespace ProyectoFinal.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult>SendWinner([FromBody] int[] winners)
+        public async Task<IActionResult> SendWinner([FromBody] int[] winners)
         {
             await _cartones.InsertCards(winners);
             return Ok();
         }
-      
+
 
     }
 }

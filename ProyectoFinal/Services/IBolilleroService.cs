@@ -4,5 +4,6 @@
     {
         int CreateBall();
         Task InsertBall(int ball);
+        void ResetGame();
     }
 }
