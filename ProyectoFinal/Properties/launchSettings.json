@@ -3,9 +3,6 @@
     "ProyectoFinal": {
       "commandName": "Project",
       "launchBrowser": true,
-      "environmentVariables": {
-        "a": "Data Source=MAQUINA-00;Initial Catalog=Bingo;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
-      },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7269;http://localhost:5094"
     },
